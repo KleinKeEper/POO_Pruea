@@ -74,6 +74,8 @@ public class index {
          System.out.println("1.Listar Libros");
          System.out.println("2.Listar Autores");
          System.out.println("3.Salir");
+         System.out.println("Agregando nueva linea");
+        
      }
     public static void inicio()
      {

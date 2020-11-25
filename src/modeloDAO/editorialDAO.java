@@ -1,62 +1,57 @@
 package modeloDAO;
-import java.sql.*;
 import config.bd.ConectaBd;
+import interfaces.CRUD3;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import interfaces.CRUD2;
-import modelo.Autor;
+import modelo.Editorial;
 
 
-public class autorDAO implements CRUD2 {
-
-    ConectaBd cn = new ConectaBd();
+public class editorialDAO implements CRUD3 {
+ConectaBd cn = new ConectaBd();
     Connection con;
     PreparedStatement pst;
     ResultSet rs;
-    Autor e = new Autor();
-    public List listarautor() {
-        ArrayList<Autor> autores = new ArrayList<>();
-        String consulta = " select * from autor ";
+    Editorial e = new Editorial();
+    @Override
+    public List listaresteditorial() {
+         ArrayList<Editorial> editoriales = new ArrayList<>();
+        String consulta = " select * from editorial ";
         try {
             con = cn.getConnection();
             pst = con.prepareStatement(consulta);
             rs = pst.executeQuery();
             while (rs.next()) {                
-                Autor autor = new Autor();
-                autor.setIdautor(rs.getInt("idautor"));
-                autor.setNombre(rs.getString("nombre"));
-                autor.setApellidos(rs.getString("apellidos"));
-                autor.setNacionalidad(rs.getString("nacionalidad"));
-                autor.setDni(rs.getString("dni"));
-                autor.setEstado(rs.getString("estado"));
+                Editorial editorial = new Editorial();
+                editorial.setIdeditorial(rs.getInt("ideditorial"));
+                editorial.setNombre(rs.getString("nombre"));
+                editorial.setEstado(rs.getString("estado"));
                 
-                autores.add(autor);
+                editoriales.add(editorial);
             }
         } catch (SQLException e) {
             System.out.println("Error: Problemas con el LISTAR");
             System.out.println(e.getMessage());
         }
-        return autores;
-        
+        return editoriales;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-    public Autor buscarautor(int idautor) {
-        
-        String consulta = " select *  "
-                        + " from autor  "
-                        + " where idautor = " + idautor ;
+   
+    public Editorial buscareditorial(int ideditorial) {
+        String consulta = " select * "
+                        + " from editorial "
+                        + " where ideditorial = " + ideditorial ;
         try {
             con = cn.getConnection();
             pst = con.prepareStatement(consulta);
             rs = pst.executeQuery();
             while (rs.next()) {
-                e.setIdautor(rs.getInt("idautor"));
+                e.setIdeditorial(rs.getInt("ideditorial"));
                 e.setNombre(rs.getString("nombre"));
-                e.setApellidos(rs.getString("apellidos"));
-                e.setNacionalidad(rs.getString("nacionalidad"));
-                e.setDni(rs.getString("codigo"));
                 e.setEstado(rs.getString("estado"));
             }
         } catch (Exception e) {
@@ -69,12 +64,11 @@ public class autorDAO implements CRUD2 {
     }
 
     @Override
-    public boolean agregarautor(Autor autor) {
+    public boolean agregareditorial(Editorial editorial) {
         Boolean agregado = false;
     	
-    	String consulta = "INSERT INTO autor (nombre , apellidos, nacionalidad, dni, estado) values( '" + autor.getNombre() +
-    			"' , '" + autor.getApellidos() + "', '" + autor.getNacionalidad()+ "' , '" + autor.getDni()+ "' , '" +
-    			autor.getEstado()	+ "' );";
+    	String consulta = "INSERT INTO estudiante (nombre , estado) values( '" + editorial.getNombre() +
+    			"' , '" + editorial.getEstado()+ "' );";
     	
     	try {
     		
@@ -91,22 +85,18 @@ public class autorDAO implements CRUD2 {
 			// TODO: handle exception
 		}
     	return agregado;
-        
-        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean editarautor(Autor autor) {
-         String consulta = " update autor "
+    public boolean editareditorial(Editorial editorial) {
+        
+        String consulta = " update editorial "
                         + " set "
-                        + " nombre = '"+ autor.getNombre() +"', "
-                        + " apellidos = '"+ autor.getApellidos() +"', "
-                        + " nacionalidad = '"+ autor.getNacionalidad()+"', "
-                        + " dni = '"+ autor.getDni()+"', "
-                        + " estado = '"+ autor.getEstado() +"' "
+                        + " nombre = '"+ editorial.getNombre() +"', "
+                        + " estado = '"+ editorial.getEstado() +"' "
                         + " where "
-                        + " idautor = " + autor.getIdautor() + "; ";
+                        + " ideditorial = " + editorial.getIdeditorial()+ "; ";
         try {
             con = cn.getConnection();
             pst = con.prepareStatement(consulta);
@@ -121,10 +111,10 @@ public class autorDAO implements CRUD2 {
     }
 
     @Override
-    public boolean eliminarautor(int idautor) {
-         String consulta = " delete from autor "
+    public boolean eliminareditorial(int ideditorial) {
+        String consulta = " delete from editorial "
                         + " where "
-                        + " idautor = " + idautor + "; ";
+                        + " ideditorial = " + ideditorial + "; ";
         try {
             con = cn.getConnection();
             pst = con.prepareStatement(consulta);
@@ -133,8 +123,10 @@ public class autorDAO implements CRUD2 {
             return false;
         }
         return true;
+        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+   
     
 }

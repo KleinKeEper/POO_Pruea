@@ -10,6 +10,8 @@ public class Autor {
     private String dni;
     private String estado;
 
+    
+    
     public Autor() {
     }
 
